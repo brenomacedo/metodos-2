@@ -1,4 +1,5 @@
 import methods.integration.newton_cotes as NC
+import methods.integration.gauss_legrenge as GL
 import math
 
 FUNCTIONS = {
@@ -20,6 +21,11 @@ METHODS = {
     1: NC.opened2ndGrade,
     2: NC.opened3rdGrade,
     3: NC.opened4thGrade
+  },
+  2: {
+    0: GL.gauss_legendre_2pts,
+    1: GL.gauss_legendre_3pts,
+    2: GL.gauss_legendre_4pts
   }
 }
 
@@ -92,39 +98,57 @@ def main():
 
   #=============================================
 
-  print('Escolha a filosofia: ')
-  print('0: fechada')
-  print('1: aberta')
+  print('Escolha o método: ')
+  print('0: newton cotes fechada')
+  print('1: newton cotes aberta')
+  print('2: gauss-legendre')
 
-  philosophy = 0
-  getPhilosophy = True
-  while getPhilosophy:
+  method = 0
+  getMethod = True
+  while getMethod:
     try:
-      philosophy = int(input('Escolha uma opção: '))
+      method = int(input('Escolha uma opção: '))
       
-      if philosophy >= 0 and philosophy <= 1:
-        getPhilosophy = False
+      if method >= 0 and method <= 2:
+        getMethod = False
     except:
       pass
 
   #=============================================
 
-  print('Escolha o grau: ')
-  print('0: grau 1')
-  print('1: grau 2')
-  print('2: grau 3')
-  print('3: grau 4')
+  subMethod = 0
 
-  grade = 0
-  getGrade = True
-  while getGrade:
-    try:
-      grade = int(input('Escolha uma opção: '))
-      
-      if grade >= 0 and grade <= 3:
-        getGrade = False
-    except:
-      pass
+  if method == 0 or method == 1:
+    print('Escolha o grau: ')
+    print('0: grau 1')
+    print('1: grau 2')
+    print('2: grau 3')
+    print('3: grau 4')
+
+    getSubMethod = True
+    while getSubMethod:
+      try:
+        subMethod = int(input('Escolha uma opção: '))
+        
+        if subMethod >= 0 and subMethod <= 3:
+          getSubMethod = False
+      except:
+        pass
+  else:
+    print('Escolha o n: ')
+    print('0: n = 2')
+    print('1: n = 3')
+    print('2: n = 4')
+
+    getSubMethod = True
+    while getSubMethod:
+      try:
+        subMethod = int(input('Escolha uma opção: '))
+        
+        if subMethod >= 0 and subMethod <= 2:
+          getSubMethod = False
+      except:
+        pass
 
   #=============================================
 
@@ -145,6 +169,9 @@ def main():
 
   #=============================================
 
+  print(METHODS[method])
+  print(METHODS[method][subMethod])
+
   if (stopPoint == 1):
     error = 0
     getError = True
@@ -157,7 +184,7 @@ def main():
       except:
         pass
 
-    result = iterate(METHODS[philosophy][grade] ,FUNCTIONS[func], a, b, error)
+    result = iterate(METHODS[method][subMethod], FUNCTIONS[func], a, b, error)
     print(result)
   else:
     partitions = 0
@@ -171,7 +198,7 @@ def main():
       except:
         pass
 
-    result = partitionate(METHODS[philosophy][grade], FUNCTIONS[func], a, b, partitions)
+    result = partitionate(METHODS[method][subMethod], FUNCTIONS[func], a, b, partitions)
     print(result)
 
 if __name__ == '__main__':
